@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StrizzyG — Creator Hub</title>
+    <link rel="icon" type="image/x-icon" href="Images/S_LOGO_98x98_FINAL.png" />
+    <link rel="stylesheet" href="Feedback.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
+    <style>
+      /* small override to ensure hero sits below the transparent header */
+      .hero {
+        padding-top: 110px;
+      }
+
+      /* Tighten spacing between hero and Suggested videos */
+      .hero2 {
+        padding-bottom: 8px;
+      }
+      .hero2 .container {
+        padding-bottom: 8px;
+      }
+      .hero2 h2,
+      .hero2 p {
+        margin-bottom: 6px;
+      }
+      /* layered depth overlay + glass sheen (overlay removed to avoid a thin shadow line) */
+      .yt-card .depth-layer {
+        position: absolute;
+        inset: 0; /* make depth layer full-bleed */
+        border-radius: 8px;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1);
+        will-change: transform;
+        background: transparent;
+        mix-blend-mode: normal;
+      }
+
+      .yt-card .thumb {
+        position: absolute;
+        inset: 0;
+        background: none; /* let thumb-inner fully cover */
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+        transform: translateZ(0);
+        transition: transform 0.35s, filter 0.35s;
+        filter: none;
+        border-radius: 8px;
+      }
+
+      .yt-card .thumb .thumb-inner {
+        position: absolute;
+        inset: -1px; /* expand slightly to hide any hairline seams */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: scale(
+          1
+        ); /* avoid 3D translate which can create subpixel seam */
+        transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1),
+          filter 0.32s;
+        filter: none; /* remove blur seam */
+        will-change: transform, filter;
+        border-radius: 10px; /* slightly larger to cover rounded-edge seams */
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      /* subtle top highlight removed to avoid visible shadow line */
+      .yt-card .thumb::before {
+        display: none !important;
+      }
+
+      .yt-card .meta {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 16px;
+        padding: 8px 10px;
+        color: #ffffffcc;
+        background: transparent; /* remove gradient overlay */
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        z-index: 6;
+        transform: translateZ(72px);
+      }
+      .yt-card .meta .title {
+        font-weight: 800;
+        margin-bottom: 2px;
+        letter-spacing: 0.2px;
+        color: #fff;
+        font-size: 15px;
+        text-shadow: none; /* remove heavy shadow */
+      }
+
+      /* hide floating play control for a cleaner thumbnail */
+      .yt-card .play {
+        display: none !important;
+      }
+      .yt-card:hover .play {
+        transform: scale(1.08) translateZ(86px);
+        box-shadow: 0 16px 46px rgba(0, 0, 0, 0.22);
+      }
+      .yt-card:hover .depth-layer {
+        transform: translateZ(12px) translateY(-6px);
+      }
+      .yt-card:hover {
+        transform: translateY(-16px) translateZ(40px) rotateX(6deg);
+        box-shadow: 0 36px 100px rgba(0, 0, 0, 0.6),
+          0 0 40px rgba(0, 0, 0, 0.02);
+      }
+      /* tilt interaction smoothing */
+      .yt-card.tilted {
+        transition: transform 0.06s;
+      }
+      .yt-card:focus {
+        outline: 3px solid rgba(0, 0, 0, 0.28);
+        outline-offset: 6px;
+        transform: translateY(-14px) translateZ(36px) rotateX(5deg);
+      }
+
+      /* === seam override: hide any remaining 1px hairline on thumbnails === */
+      .yt-card,
+      .yt-card .depth-layer {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      .yt-card .thumb {
+        border-radius: 0 !important;
+        overflow: hidden;
+      }
+      .yt-card .thumb .thumb-inner {
+        inset: -2px !important; /* extend beyond edges to mask seams */
+        border-radius: 12px !important; /* larger than card to avoid rounded-edge gaps */
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        box-shadow: none !important;
+      }
+
+      @media (max-width: 900px) {
+        .yt-card {
+          width: 300px;
+          height: 170px;
+        }
+        .yt-3d-feed {
+          flex-wrap: wrap;
+          gap: 16px;
+          min-height: 180px;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .yt-card {
+          width: 46%;
+          height: 140px;
+        }
+        .yt-3d-feed {
+          gap: 10px;
+        }
+      }
+
+      /* Responsive smaller sizes */
+      @media (max-width: 720px) {
+        .yt-card {
+          width: 220px;
+          height: 130px;
+        }
+      }
+
+      /* simple thumbnail grid fallback */
+      .yt-simple-grid {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .yt-simple-card {
+        width: 240px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #0f0f0f;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+      }
+      .yt-simple-card .thumb {
+        height: 136px;
+        background-size: cover;
+        background-position: center;
+      }
+      .yt-simple-card .info {
+        padding: 10px;
+        font-size: 13px;
+      }
+      .yt-simple-card .title {
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      @media (max-width: 720px) {
+        .yt-simple-card {
+          width: 46%;
+        }
+      }
+
+      /* Lightbox */
+      #yt-lightbox {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 2147483647 !important;
+        padding: 24px;
+        pointer-events: none;
+      }
+      #yt-lightbox.active {
+        display: flex;
+        pointer-events: auto;
+      }
+      #yt-lightbox .frame {
+        width: min(920px, 96%);
+        aspect-ratio: 16/9;
+        background: #000;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Footer: plain pure black band (decorative separators removed) */
+      footer.site-footer {
+        background: #000000;
+        padding: 16px 18px;
+        color: #ffffff;
+        position: relative;
+        z-index: 30;
+        overflow: visible;
+      }
+
+      footer.site-footer .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      footer.site-footer .brand-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      footer.site-footer .brand {
+        font-weight: 900;
+        font-size: 16px;
+        color: #fff;
+        letter-spacing: 0.4px;
+      }
+      footer.site-footer .footer-desc {
+        color: #ffffff;
+        opacity: 0.92;
+        font-weight: 500;
+      }
+
+      /* CTA button (YouTube red Subscribe) */
+      .footer-cta {
+        background: linear-gradient(180deg, #ff0000, #d40000);
+        padding: 8px 14px;
+        border-radius: 999px;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(255, 0, 0, 0.12);
+        transition: transform 0.18s, box-shadow 0.18s, background 0.15s;
+      }
+      .footer-cta:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 60px rgba(212, 0, 0, 0.18);
+      }
+      .footer-cta:focus {
+        outline: 3px solid rgba(255, 0, 0, 0.12);
+        outline-offset: 4px;
+      }
+
+      footer.site-footer .social {
+        display: flex;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      footer.site-footer .social li a {
+        display: inline-grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.02);
+        color: #fff;
+        transition: all 0.22s;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+      }
+      footer.site-footer .social li a i {
+        transition: transform 0.18s, filter 0.18s;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.08));
+      }
+      footer.site-footer .social li a:hover {
+        transform: translateY(-6px);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.14),
+          rgba(0, 0, 0, 0.06)
+        );
+        box-shadow: 0 22px 56px rgba(0, 0, 0, 0.12);
+      }
+      footer.site-footer .social li a:hover i {
+        transform: scale(1.08);
+        filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.12));
+      }
+
+      /* responsive */
+      @media (max-width: 700px) {
+        footer.site-footer .container {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        footer.site-footer .brand {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <a href="index.html" class="brand-link" aria-label="StrizzyG home">
+          <img
+            src="/Strizzy-main/Images/ONLY_S_LOGO_BLACK_BG-removebg-preview.png"
+            alt="StrizzyG"
+            class="brand-logo"
+          />
+        </a>
+        <!-- Hamburger toggle for small screens -->
+        <button
+          class="menu-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <span class="hamburger" aria-hidden="true"></span>
+        </button>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Feedback.html">Feedback</a></li>
+            <li><a href="About.html">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="feedback card">
+      <div class="container">
+        <h2>Send Feedback</h2>
+        <p class="note">We appreciate your thoughts — share feedback below.</p>
+
+        <form id="feedbackForm">
+          <label for="fbName">Name (optional)</label>
+          <input id="fbName" type="text" placeholder="Your name" />
+
+          <label for="fbMessage">Message</label>
+          <textarea
+            id="fbMessage"
+            rows="5"
+            required
+            placeholder="Write your feedback..."
+          ></textarea>
+
+          <div
+            style="
+              margin-top: 12px;
+              display: flex;
+              gap: 8px;
+              align-items: center;
+            "
+          >
+            <button type="submit" class="btn primary">Post Feedback</button>
+            <button type="button" id="clearFeedback" class="btn">
+              Clear All
+            </button>
+          </div>
+        </form>
+
+        <hr />
+        <h3>Messages</h3>
+        <div id="feedbackList" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-sep" aria-hidden="true">
+        <div class="sep-bg" aria-hidden="true"></div>
+        <div class="sep-lines" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="brand-group">
+          <div class="brand">StrizzyG</div>
+          <div class="footer-desc">
+            Creator portal · Videos · Links · Stay connected
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center">
+          <ul class="social"></ul>
+        </div>
+      </div>
+    </footer>
+
+    <script src="site.js"></script>
+
+    <script>
+      (function () {
+        const STORAGE_KEY = "feedbackPosts_v1";
+        const form = document.getElementById("feedbackForm");
+        const list = document.getElementById("feedbackList");
+        const clearBtn = document.getElementById("clearFeedback");
+
+        function load() {
+          try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          } catch (e) {
+            return [];
+          }
+        }
+        function save(arr) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+        }
+
+        function render() {
+          const posts = load();
+          list.innerHTML = "";
+          if (!posts.length) {
+            list.innerHTML = '<p class="note">No messages yet.</p>';
+            return;
+          }
+          posts
+            .slice()
+            .reverse()
+            .forEach((p) => {
+              const el = document.createElement("div");
+              el.className = "feedback-post card small";
+              el.style.marginBottom = "12px";
+              el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start;gap:12px"><div><strong>${escapeHtml(
+                p.name || "Anonymous"
+              )}</strong><div class="small-muted" style="font-size:12px;margin-top:4px">${new Date(
+                p.ts
+              ).toLocaleString()}</div></div><div><button class='btn' data-id='${
+                p.ts
+              }'>Delete</button></div></div><div style="margin-top:8px">${escapeHtml(
+                p.message
+              )}</div>`;
+              list.appendChild(el);
+            });
+          // attach delete handlers
+          list.querySelectorAll("button[data-id]").forEach((b) =>
+            b.addEventListener("click", function () {
+              const id = this.getAttribute("data-id");
+              let posts = load();
+              posts = posts.filter((x) => String(x.ts) !== String(id));
+              save(posts);
+              render();
+            })
+          );
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const name = document.getElementById("fbName").value.trim();
+          const msg = document.getElementById("fbMessage").value.trim();
+          if (!msg) return;
+          const posts = load();
+          posts.push({
+            name: name || "Anonymous",
+            message: msg,
+            ts: Date.now(),
+          });
+          save(posts);
+          form.reset();
+          render();
+        });
+
+        clearBtn.addEventListener("click", function () {
+          if (!confirm("Clear all feedback messages?")) return;
+          localStorage.removeItem(STORAGE_KEY);
+          render();
+        });
+
+        // initial render
+        render();
+      })();
+    </script>
+  </body>
+</html>

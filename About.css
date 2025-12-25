@@ -1,0 +1,364 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Open Sans", sans-serif;
+  background-color: #ffffff; /* Make page background white */
+  color: #161a1d; /* Keep text dark for contrast */
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Site header / navigation */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: #000000; /* match Feedback header */
+  padding: 5px 0;
+  border-bottom: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* Ensure footer is pushed to page bottom when content is short */
+footer.site-footer {
+  margin-top: auto;
+}
+
+/* hide header decorative pseudo-element to avoid obscuring the logo */
+header::after {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  header::after {
+    bottom: -16px;
+    height: 44px;
+    filter: blur(5px);
+  }
+}
+
+header .container {
+  max-width: 1200px;
+  width: 95%; /* Centered with 5% padding on left and right */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 20px;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+/* Brand image helper (use for header logo) */
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  position: relative;
+  z-index: 1100;
+  margin-left: 47px; /* shifted 2px further right */
+}
+.brand-logo {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+nav {
+  position: absolute;
+  top: 58px;
+  right: 107px;
+  width: 220px;
+  max-width: calc(100% - 24px);
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+nav ul li {
+  margin: 0;
+  width: 100%;
+}
+
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.12s;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+  background: rgb(0, 0, 0);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.menu-toggle {
+  display: inline-flex;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  position: absolute;
+  right: 107px;
+}
+.menu-toggle:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.12);
+}
+.hamburger {
+  display: inline-block;
+  width: 22px;
+  height: 2px;
+  background: #ffffff;
+  position: relative;
+  transition: all 0.18s ease;
+}
+.hamburger::before,
+.hamburger::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: #ffffff;
+  transition: all 0.18s ease;
+}
+.hamburger::before {
+  top: -7px;
+}
+.hamburger::after {
+  top: 7px;
+}
+
+header.open nav {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* when menu toggle is active, animate hamburger */
+.menu-toggle[aria-expanded="true"] .hamburger {
+  background: transparent;
+}
+.menu-toggle[aria-expanded="true"] .hamburger::before {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.menu-toggle[aria-expanded="true"] .hamburger::after {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.hero2 {
+  background-color: #ffffff; /* keep hero area white */
+  color: #161a1d;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero .cta {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.hero .cta:hover {
+  background-color: #000000;
+}
+
+.about {
+  background-color: #ffffff;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.about .container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.courses {
+  background-color: #ffffff;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.courses .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.search-box {
+  margin: 20px auto;
+  max-width: 600px;
+  position: relative;
+}
+
+/* Ensure search and inputs are responsive */
+@media (max-width: 600px) {
+  #searchBox {
+    padding: 10px 14px;
+  }
+}
+
+#searchBox {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 1px solid #d3d3d3;
+  border-radius: 25px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#searchBox:focus,
+#searchBox:hover {
+  border-color: red;
+  box-shadow: 0 0 10px red;
+}
+
+.course {
+  background-color: #ffffff;
+  border: 1px solid #e6e6ef; /* subtle border */
+  margin: 10px;
+  padding: 20px;
+  flex: 1 1 calc(33.33% - 40px);
+  box-shadow: none; /* keep everything visually white */
+  transition: transform 0.3s;
+  display: none; /* Hide courses by default */
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.course:hover {
+  transform: scale(1.05);
+}
+
+.course h3 {
+  color: #ffffff; /* dark headings */
+}
+
+.course .cta {
+  background-color: #a4161a;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.course .cta:hover {
+  background-color: #660708;
+}
+
+#noResultsMessage {
+  display: none;
+  text-align: center;
+  font-size: 18px;
+  color: #660708;
+}
+
+.testimonials {
+  background-color: #000000;
+  padding: 50px 0;
+  color: #161a1d;
+  text-align: center;
+}
+
+.testimonial {
+  background-color: #000000;
+  padding: 20px;
+  margin: 10px auto;
+  border-radius: 5px;
+  max-width: 500px;
+  color: #c71d1d;
+  border: 1px solid e6e6ef;
+}
+
+/* Footer: match Feedback styling */
+footer.site-footer {
+  background: #000000;
+  color: #ffffff;
+  padding: 16px 0 18px 0; /* match index footer sizing */
+  margin-top: auto;
+  position: relative;
+  z-index: 30;
+  overflow: visible;
+}
+footer.site-footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+footer.site-footer .brand-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: 8px;
+}
+footer.site-footer .brand {
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 0.4px;
+}
+footer.site-footer .footer-desc {
+  color: #ffffff;
+  opacity: 0.95;
+  font-weight: 500;
+}
+/* Hide footer social icons like index */
+footer.site-footer .social {
+  display: none;
+}
+/* Neutralize any residual styling */
+footer.site-footer .social li a,
+footer.site-footer .social li a i {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
