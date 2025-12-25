@@ -13,13 +13,18 @@
         platforms: [
             {name: 'YouTube', url: 'https://www.youtube.com/@StrizzyGG', icon: 'fab fa-youtube'},
             {name: 'Instagram', url: 'https://www.instagram.com/strizzyg/', icon: 'fab fa-instagram'},
-            {name: 'X', url: 'https://x.com/StrizzyGG', icon: 'fab fa-twitter'}
+            // Twitch then a custom box, then Twitter (X) — custom lets you provide your own image
+            {name: 'Twitch', url: 'https://twitch.tv/strizzyg', icon: 'fab fa-twitch'},
+            
+            {name: 'X', url: 'https://x.com/StrizzyGG', icon: 'fab fa-twitter'},
+            {name: 'TikTok', url: 'https://www.tiktok.com/@strizzyg', icon: 'fab fa-tiktok'},
+            {name: 'Discord', url: 'https://discord.gg/kYp23wWDAN', icon: 'fab fa-discord'}
         ],
         // Replace VIDEO_ID_X with your YouTube video IDs. Keep placeholder IDs until you update.
         videos: [
-            {id: 'UTKLQQbn59k', title: 'Featured video', description: ''},
-            {id: '_6WSY3bUOD0', title: 'Featured video 2', description: ''},
-            {id: 'gjNTUXgSPYA', title: 'Featured video 3', description: ''}
+            {id: 'UTKLQQbn59k', title: '', description: ''},
+            {id: '_6WSY3bUOD0', title: '', description: ''},
+            {id: 'gjNTUXgSPYA', title: '', description: ''}
         ]
     };
 
@@ -32,65 +37,100 @@
             const item = document.createElement('div');
             item.className = 'platform-item';
 
-            const a = document.createElement('a');
-            a.href = p.url;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.className = 'platform-card';
-            a.setAttribute('aria-label', p.name);
-            a.title = p.name;
-            a.innerHTML = `<i class="${p.icon}" aria-hidden="true"></i>`;
-            item.appendChild(a);
-
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'platform-follow';
-            btn.textContent = 'Follow';
-            btn.setAttribute('aria-label', `Follow ${p.name}`);
-            // Clicking Follow will try a platform-specific follow/subscribe intent where supported
-            function getFollowUrl(platform){
-                try{
-                    if(platform.follow) return platform.follow;
-                    const u = new URL(platform.url);
-                    const host = u.hostname.replace('www.','').toLowerCase();
-                    const parts = u.pathname.split('/').filter(Boolean);
-                    const username = parts[0] || '';
-
-                    // X / Twitter: follow intent
-                    if(host.includes('twitter.com') || host.includes('x.com')){
-                        if(username) return `https://twitter.com/intent/follow?screen_name=${username}`;
-                    }
-
-                    // YouTube: try adding subscription confirmation (works with channel or user paths)
-                    if(host.includes('youtube.com')){
-                        let base = platform.url;
-                        if(base.endsWith('/')) base = base.slice(0,-1);
-                        return base + (base.includes('?') ? '&' : '?') + 'sub_confirmation=1';
-                    }
-
-                    // Instagram / TikTok / LinkedIn etc.: no public follow-intent; open profile instead
-                    if(host.includes('instagram.com') && username){
-                        return `https://www.instagram.com/${username}/`;
-                    }
-                    if(host.includes('tiktok.com') && username){
-                        return `https://www.tiktok.com/@${username}`;
-                    }
-
-                    // Fallback to the provided URL
-                    return platform.url;
-                }catch(err){
-                    return platform.url;
+            let a;
+            if(p.custom){
+                // custom box — allow background image via p.image
+                a = document.createElement('a');
+                a.href = p.url || '#';
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.className = 'platform-card custom';
+                a.setAttribute('aria-label', p.name || 'Custom');
+                a.title = p.name || 'Custom';
+                if(p.image){
+                    a.style.backgroundImage = `url('${p.image}')`;
+                    a.style.backgroundSize = 'cover';
+                    a.style.backgroundPosition = 'center';
+                } else {
+                    a.style.background = '#000';
                 }
+                // empty content — image is background
+                a.innerHTML = '';
+                item.appendChild(a);
+            } else {
+                a = document.createElement('a');
+                a.href = p.url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.className = 'platform-card';
+                a.setAttribute('aria-label', p.name);
+                a.title = p.name;
+                a.innerHTML = `<i class="${p.icon}" aria-hidden="true"></i>`;
+                item.appendChild(a);
             }
 
-            btn.addEventListener('click', function(e){
-                e.stopPropagation();
-                const followUrl = getFollowUrl(p) || p.url;
-                // open follow intent or profile in new tab
-                window.open(followUrl, '_blank', 'noopener');
-            });
+            // Do not render a follow/subscribe/join button for custom image boxes
+            if(!p.custom){
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'platform-follow';
+                // Platform-specific button text: Discord -> 'Join', YouTube -> 'Subscribe', others -> 'Follow'
+                const nameLower = (p.name || '').toLowerCase();
+                if(nameLower.includes('discord')){
+                    btn.textContent = 'Join';
+                    btn.setAttribute('aria-label', `Join ${p.name}`);
+                } else if(nameLower.includes('youtube')){
+                    btn.textContent = 'Subscribe';
+                    btn.setAttribute('aria-label', `Subscribe to ${p.name}`);
+                } else {
+                    btn.textContent = 'Follow';
+                    btn.setAttribute('aria-label', `Follow ${p.name}`);
+                }
+                // Clicking Follow will try a platform-specific follow/subscribe intent where supported
+                function getFollowUrl(platform){
+                    try{
+                        if(platform.follow) return platform.follow;
+                        const u = new URL(platform.url);
+                        const host = u.hostname.replace('www.','').toLowerCase();
+                        const parts = u.pathname.split('/').filter(Boolean);
+                        const username = parts[0] || '';
 
-            item.appendChild(btn);
+                        // X / Twitter: follow intent
+                        if(host.includes('twitter.com') || host.includes('x.com')){
+                            if(username) return `https://twitter.com/intent/follow?screen_name=${username}`;
+                        }
+
+                        // YouTube: try adding subscription confirmation (works with channel or user paths)
+                        if(host.includes('youtube.com')){
+                            let base = platform.url;
+                            if(base.endsWith('/')) base = base.slice(0,-1);
+                            return base + (base.includes('?') ? '&' : '?') + 'sub_confirmation=1';
+                        }
+
+                        // Instagram / TikTok / LinkedIn etc.: no public follow-intent; open profile instead
+                        if(host.includes('instagram.com') && username){
+                            return `https://www.instagram.com/${username}/`;
+                        }
+                        if(host.includes('tiktok.com') && username){
+                            return `https://www.tiktok.com/@${username}`;
+                        }
+
+                        // Fallback to the provided URL
+                        return platform.url;
+                    }catch(err){
+                        return platform.url;
+                    }
+                }
+
+                btn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    const followUrl = getFollowUrl(p) || p.url;
+                    // open follow intent or profile in new tab
+                    window.open(followUrl, '_blank', 'noopener');
+                });
+
+                item.appendChild(btn);
+            }
             container.appendChild(item);
         });
     }

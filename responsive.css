@@ -1,7 +1,7 @@
 /* General styles */
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f0f0f0;
+  background-color: #000000;
   color: #333333;
   margin: 0;
   padding: 0;
@@ -39,7 +39,7 @@ header {
 }
 
 .nav-menu li a {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
   padding: 10px 20px;
   transition: color 0.3s ease, transform 0.3s ease;
