@@ -72,7 +72,7 @@
         cursor: pointer;
         will-change: transform;
         border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 18px 70px rgba(0,0,0,0.6), 0 0 30px rgba(59,130,246,0.06);
+        box-shadow: 0 18px 70px rgba(0,0,0,0.6), 0 0 30px rgba(0,0,0,0.03);
         padding: 10px; /* give inner padding for layered content */
       }
 
@@ -118,7 +118,7 @@
         top: -40%;
         width: 140%;
         height: 60%;
-        background: radial-gradient(600px 200px at 10% 10%, rgba(59,130,246,0.06), transparent 16%);
+        background: radial-gradient(600px 200px at 10% 10%, rgba(0,0,0,0.04), transparent 16%);
         transform: translateZ(60px) rotate(-6deg);
         pointer-events: none;
         mix-blend-mode: overlay;
@@ -155,22 +155,22 @@
         width:52px;
         height:52px;
         border-radius:50%;
-        background: linear-gradient(180deg, rgba(59,130,246,0.22), rgba(59,130,246,0.12));
+        background: linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12));
         display:grid;
         place-items:center;
         color:#fff;
         font-size:18px;
         transition: transform .18s, box-shadow .18s;
         z-index:8;
-        box-shadow: 0 10px 30px rgba(59,130,246,0.12), 0 6px 18px rgba(0,0,0,0.6);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12), 0 6px 18px rgba(0,0,0,0.6);
         transform: translateZ(82px);
       }
-      .yt-card:hover .play{ transform: scale(1.08) translateZ(86px); box-shadow: 0 16px 46px rgba(59,130,246,0.22); }
+      .yt-card:hover .play{ transform: scale(1.08) translateZ(86px); box-shadow: 0 16px 46px rgba(0,0,0,0.22); }
       .yt-card:hover .depth-layer{ transform: translateZ(12px) translateY(-6px) }
-      .yt-card:hover { transform: translateY(-16px) translateZ(40px) rotateX(6deg); box-shadow: 0 36px 100px rgba(0,0,0,0.6), 0 0 40px rgba(59,130,246,0.05); }
+      .yt-card:hover { transform: translateY(-16px) translateZ(40px) rotateX(6deg); box-shadow: 0 36px 100px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.02); }
       /* tilt interaction smoothing */
       .yt-card.tilted { transition: transform 0.06s; }
-      .yt-card:focus { outline: 3px solid rgba(59,130,246,0.28); outline-offset: 6px; transform: translateY(-14px) translateZ(36px) rotateX(5deg); }
+      .yt-card:focus { outline: 3px solid rgba(0,0,0,0.28); outline-offset: 6px; transform: translateY(-14px) translateZ(36px) rotateX(5deg); }
 
       @media (max-width:900px){
         .yt-card{width:300px;height:170px}
@@ -226,7 +226,7 @@
       footer.site-footer .container{display:flex;align-items:center;justify-content:space-between;gap:16px}
       footer.site-footer .brand-group{display:flex;align-items:center;gap:14px}
       footer.site-footer .brand{font-weight:900;font-size:18px;color:#fff;letter-spacing:0.4px}
-      footer.site-footer .footer-desc{color:#a9c9ff;opacity:0.95;font-weight:500}
+      footer.site-footer .footer-desc{color:#ffffff;opacity:0.95;font-weight:500}
 
       /* CTA button (YouTube red Subscribe) */
       .footer-cta{background:linear-gradient(180deg,#ff0000,#d40000);padding:8px 14px;border-radius:999px;color:#fff;font-weight:700;border:none;cursor:pointer;box-shadow:0 10px 30px rgba(255,0,0,0.12);transition:transform .18s,box-shadow .18s,background .15s}
@@ -235,9 +235,9 @@
 
       footer.site-footer .social{display:flex;gap:10px;margin:0;padding:0;list-style:none}
       footer.site-footer .social li a{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.02);color:#fff;transition:all .22s;box-shadow:0 6px 14px rgba(0,0,0,0.45)}
-      footer.site-footer .social li a i{transition:transform .18s,filter .18s;filter:drop-shadow(0 6px 18px rgba(59,130,246,0.08))}
-      footer.site-footer .social li a:hover{transform:translateY(-6px);background:linear-gradient(180deg,rgba(59,130,246,0.14),rgba(59,130,246,0.06));box-shadow:0 22px 56px rgba(59,130,246,0.12)}
-      footer.site-footer .social li a:hover i{transform:scale(1.08);filter:drop-shadow(0 18px 40px rgba(59,130,246,0.22))}
+      footer.site-footer .social li a i{transition:transform .18s,filter .18s;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.08))}
+      footer.site-footer .social li a:hover{transform:translateY(-6px);background:linear-gradient(180deg,rgba(0,0,0,0.14),rgba(0,0,0,0.06));box-shadow:0 22px 56px rgba(0,0,0,0.12)}
+      footer.site-footer .social li a:hover i{transform:scale(1.08);filter:drop-shadow(0 18px 40px rgba(0,0,0,0.12))}
 
       /* responsive */
       @media (max-width:700px){
@@ -305,7 +305,6 @@
           <div class="footer-desc">Creator portal · Videos · Links · Stay connected</div>
         </div>
         <div style="display:flex;gap:12px;align-items:center">
-          <button class="footer-cta" onclick="window.open('https://www.youtube.com/@StrizzyGG', '_blank')">Subscribe</button>
           <ul class="social">
           </ul>
         </div>

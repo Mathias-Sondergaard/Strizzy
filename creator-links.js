@@ -85,7 +85,10 @@
         a.className = "platform-card";
         a.setAttribute("aria-label", p.name);
         a.title = p.name;
-        a.innerHTML = `<i class="${p.icon}" aria-hidden="true"></i>`;
+        a.innerHTML = `<i class="${p.icon}" aria-hidden="true" style="color:#fff;"></i>`;
+        a.style.background = '#000';
+        a.style.backgroundSize = 'cover';
+        a.style.backgroundPosition = 'center';
         item.appendChild(a);
       }
 
@@ -106,7 +109,16 @@
           btn.textContent = "Follow";
           btn.setAttribute("aria-label", `Follow ${p.name}`);
         }
+        // Style the follow button: black background, white text (subtle border/radius)
         // Clicking Follow will try a platform-specific follow/subscribe intent where supported
+        btn.style.background = '#000';
+        btn.style.color = '#fff';
+        btn.style.border = '1px solid rgba(255,255,255,0.08)';
+        btn.style.padding = '6px 10px';
+        btn.style.borderRadius = '8px';
+        btn.style.cursor = 'pointer';
+        btn.style.fontWeight = '600';
+        btn.style.letterSpacing = '0.2px';
         function getFollowUrl(platform) {
           try {
             if (platform.follow) return platform.follow;

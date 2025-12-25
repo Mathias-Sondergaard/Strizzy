@@ -42,6 +42,20 @@ footer.site-footer .social li a {
   background: rgba(255, 255, 255, 0.02);
   color: #fff;
 }
+/* Force any remaining blue tints in footer/social to neutral black */
+footer.site-footer .social li a,
+footer.site-footer .social li a i {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Ensure play buttons and similar accents don't show blue glows */
+.yt-card .play,
+.yt-card .play i {
+  background: linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12)) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12) !important;
+}
 /* Header: transparent top menu over hero */
 /* Header: fixed black navigation */
 header {
@@ -538,7 +552,7 @@ textarea {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 .feedback .btn:focus {
-  outline: 3px solid rgba(59, 130, 246, 0.12);
+  outline: 3px solid rgba(0, 0, 0, 0.12);
   outline-offset: 4px;
 }
 .feedback .btn.primary:hover {
@@ -631,8 +645,8 @@ textarea {
   transform: translateY(-4px);
   box-shadow: 0 18px 48px rgba(2, 6, 23, 0.55);
 }
-.creator-hub .platform-card:focus {
-  outline: 3px solid rgba(59, 130, 246, 0.12);
+  .creator-hub .platform-card:focus {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
   outline-offset: 4px;
 }
 .creator-hub .platform-card.custom {
@@ -662,8 +676,8 @@ textarea {
   transform: translateY(-4px);
   box-shadow: 0 18px 48px rgba(2, 6, 23, 0.55);
 }
-.creator-hub .platform-follow:focus {
-  outline: 3px solid rgba(59, 130, 246, 0.12);
+  .creator-hub .platform-follow:focus {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
   outline-offset: 4px;
 }
 
